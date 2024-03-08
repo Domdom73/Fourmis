@@ -18,15 +18,15 @@ Ensuite, j'ai rajouté des pas de temps dans `ants.py` pour pouvoir calculer le 
 
 Ici j'obtiens donc :
 
-food_counter=2327
+food_counter = 2327
 
-Temps total=231.17849493026733
+Temps total=72.92769002914429
 
-Temps de calul = 132.5206742286682
+Temps de calul = 44.51706290245056
 
-Temps d'affichage = 96.941153049469
+Temps d'affichage = 27.271523475646973
 
-On observe donc que le temps d'affichage est assez conséquent : il représente 41,9% du temps d'exécution. Il paraît donc très pertinent de commencer par la séparation de l'affichage et des calculs. 
+On observe donc que le temps d'affichage est assez conséquent : il représente 37,3% du temps d'exécution (en moyenne aux alentours de 40%). Il paraît donc très pertinent de commencer par la séparation de l'affichage et des calculs. 
 
 
 ## Stratégies de parallélisation 
@@ -41,18 +41,22 @@ Pour séparer l'affichage du calcul, j'ai créé un nouveau fichier python `disp
 De plus, dans la boucle d'exécution, il faut établir une connexion entre les deux processeurs car le processeur 0 a besoin des phéromones et des informations `directions`, `historic_path` et `age` de la colonie de fourmis pour pouvoir faire l'affichage. 
 
 On obtient donc avec la ligne de commande : `mpirun -np 2 python3 main_mpi1.py`
-Temps total=103.05959343910217
-2327
-Temps de calul = 143.2846806049347
-Temps de communication = 28.35943102836609
-Temps d'affichage = 99.53489828109741
+food_counter = 2327
+
+Temps total = 49.962143898010254
+
+Temps de calul = 47.044970750808716
+
+Temps de communication = 2.62005615234375
+
+Temps d'affichage = 32.070555210113525
 
 
 Cela nous permet donc de calculer le speed-up :
 
-$S(2)=\frac{t_{total-séquentiel}}{t_{total-parallèle}}=$
+$S(2)=\frac{t_{total-séquentiel}}{t_{total-parallèle}}=\frac{72.92769002914429}{49.962143898010254}=1,46$
 
-C'est un speed-up tout à fait convenable qui nous permet de valider cette parallélisation. De plus le temps de communication est plutôt négligeable par rapport aux temps de calcul et d'affichage ce qui est aussi bon signe.
+C'est un speed-up tout à fait convenable qui nous permet de valider cette parallélisation. De plus le temps de communication est largement négligeable par rapport aux temps de calcul et d'affichage ce qui est aussi bon signe.
 
 ### Séparation affichage-calcul et répartition des fourmis entre les processeurs
 
