@@ -63,6 +63,20 @@ C'est un speed-up tout à fait convenable qui nous permet de valider cette paral
 Si le temps d'exécution a diminué après la séparation de l'affichage et du calcul, c'est toujours le temps de calcul qui limite l'exécution du programme. On peut donc essayer de répartir les fourmis entre les processus de rang autre que 0 pour idéalement diviser le temps de calcul par le nombre de processeur (moins 1 car le processeur 0 ne fera pas de calculs de colonie). Pour cela, on va créer une colonie par processus `local_ants` et chaque processus s'occupera de faire les calculs sur sa colonie. 
 
 Cependant la gestion des phéromones peut ici nous poser problème. En effet, dans les calculs, les processeurs exécutent la fonction `advance` de `Colony` qui récupère la matrice des phéromones et la modifie. Mais cette modification utilise les marquages des cases voisines : si on ne conserve pas l'ancienne matrice de phéromones, on risque de faire des marquages qui n'auront pas de sens. 
+Pour cela, on modifie donc la classe `Colony`:
+
+`old_pheromon=pheromones.pheromon.copy()
+        [pheromones.mark(self.historic_path[i, self.age[i], :],
+                         [has_north_exit[i], has_east_exit[i], has_west_exit[i], has_south_exit[i]], old_pheromon) for i in range(self.directions.shape[0])`
+
+Ainsi que la méthode `mark` de `Pheromon` :
+
+`cells = np.array([old_pheromon[the_position[0]+1, the_position[1]] if has_WESN_exits[d.DIR_WEST] else 0.,
+                   old_pheromon[the_position[0]+1, the_position[1]+2] if has_WESN_exits[d.DIR_EAST] else 0.,
+                   old_pheromon[the_position[0]+2, the_position[1]+1] if has_WESN_exits[d.DIR_SOUTH] else 0.,
+                   old_pheromon[the_position[0], the_position[1]+1] if has_WESN_exits[d.DIR_NORTH] else 0.], dtype=np.double)`
+
+
 
 
 ### Partitions du labyrinthe
