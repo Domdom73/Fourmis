@@ -27,7 +27,7 @@ Temps de calul = 44.51706290245056
 Temps d'affichage = 27.271523475646973
 
 On observe donc que le temps d'affichage est assez conséquent : il représente 37,3% du temps d'exécution (en moyenne aux alentours de 40%). Il paraît donc très pertinent de commencer par la séparation de l'affichage et des calculs. 
-
+De plus, on peut observer que ce problème est plutôt CPU-bound.
 
 ## Stratégies de parallélisation 
 
@@ -38,7 +38,7 @@ Dans ce cas là, l'équilibre des tâches ne sera évidemment pas parfait puisqu
 
 Pour séparer l'affichage du calcul, j'ai créé un nouveau fichier python `display_mpi1.py` dans lequel j'ai pris les fonctions `display` des classes `Colony` et `Pheromon`, et `GetColor` de `Pheromon` (fonctions que j'ai commenté dans `colony_mpi1.py` et `pheromone_mpi1.py`). Ainsi dans mon fichier principal `main_mpi1.py`, je peux simplement appeler ces fonctions dont les parties du code associées au processeur de rang 0.
 
-De plus, dans la boucle d'exécution, il faut établir une connexion entre les deux processeurs car le processeur 0 a besoin des phéromones et des informations `directions`, `historic_path` et `age` de la colonie de fourmis pour pouvoir faire l'affichage. 
+De plus, dans la boucle d'exécution, il faut établir une communication entre les deux processeurs car le processeur 0 a besoin des phéromones et des informations `directions`, `historic_path` et `age` de la colonie de fourmis pour pouvoir faire l'affichage. 
 
 On obtient donc avec la ligne de commande : `mpirun -np 2 python3 main_mpi1.py`
 food_counter = 2327
@@ -76,12 +76,12 @@ Ainsi que la méthode `mark` de `Pheromon` :
                    old_pheromon[the_position[0]+2, the_position[1]+1] if has_WESN_exits[d.DIR_SOUTH] else 0.,
                    old_pheromon[the_position[0], the_position[1]+1] if has_WESN_exits[d.DIR_NORTH] else 0.], dtype=np.double)`
 
-De plus, le processeur 0 va avoir besoin de rassembler les informations de chaque colonie pour les afficher ainsi que réduire toutes les phéromones en prenant le max à chaque fois (alpha = 1).
-Cependant, j'ai essayé d'implenter tout ça avec `Gatherv` et `Reduce` mais si le programme ne m'affiche pas d'erreur particulière, aucune fourmi n'apparaît dans le labyrinthe. 
+De plus, le processeur 0 va avoir besoin de rassembler les informations de chaque colonie pour les afficher ainsi que réduire tous les phéromones en prenant le max à chaque fois (alpha = 1).
+Cependant, j'ai essayé d'implenter tout ça avec `Gatherv` et `Reduce` mais si le programme ne m'affiche pas d'erreur particulière, aucune fourmi n'apparaît dans le labyrinthe et je n'ai pas réussi à régler le problème. Tous les scripts correspondants se trouvent dans le fichier *séparation_fourmis*
 
 
 ### Partitions du labyrinthe
-On peut enfin se poser la question d'une potentielle partition du labyrinthe. On pourrait s'inspirer du jeu de la vie en commençant par diviser le labyrinthe en deux puis en quatre. Cependant les questions que l'on se pose seront quand même bien différentes. En effet, si dans le jeu de la vie on utilisait des *cellules fantômes* pour communiquer les informations entre les processus, ici nous aurons le problème des fourmis qui passent d'une partie à une autre. 
+On peut enfin se poser la question d'une potentielle partition du labyrinthe. On pourrait s'inspirer du jeu de la vie en commençant par diviser le labyrinthe en deux puis en quatre. Cependant les questions que l'on se pose seront quand même bien différentes. En effet, si dans le jeu de la vie on utilisait des *cellules fantômes* pour communiquer les informations entre les processus, ici nous aurons le problème des fourmis qui passent d'une partie du labyrinthe à une autre. 
 De plus, il faudra aussi se poser la question de l'équilibre des charges. En effet, si on observe aléatoirement le comportement des fourmis, on peut voir que certaines parties du labyrinthe ne sont pas atteintes par les fourmis. De plus, les fourmis peuvent parfois se concentrer dans certaines parties du labyrinthe ce qui surchargerait un processeur par rapport aux autres. 
 
 
