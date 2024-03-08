@@ -30,8 +30,26 @@ Ainsi on peut effectivement commencer par séparer l'affichage de la gestion des
 
 ### Séparation affichage - gestion des fourmis/phéromones
 
-Dans un premier temps, on se propose de paralléliser avec deux processeurs : le processeur 0 s'occupe uniquement de l'affichage et le processeur 1 s'occupe d'effectuer les calculs.
+Dans un premier temps, on se propose de paralléliser avec deux processeurs : le processeur 0 s'occupe uniquement de l'affichage et le processeur 1 s'occupe d'effectuer les calculs. Vous pourrez trouver tous les fichiers correspondants dans le fichier *affichage-reste*.
 Dans ce cas là, l'équilibre des tâches ne sera évidemment pas parfait puisque le calcul est clairement le facteur limitant dans l'exécution.
+
+Pour séparer l'affichage du calcul, j'ai créé un nouveau fichier python `display_mpi1.py` dans lequel j'ai pris les fonctions `display` des classes `Colony` et `Pheromon`, et `GetColor` de `Pheromon` (fonctions que j'ai commenté dans `colony_mpi1.py` et `pheromone_mpi1.py`). Ainsi dans mon fichier principal `main_mpi1.py`, je peux simplement appeler ces fonctions dont les parties du code associées au processeur de rang 0.
+
+De plus, dans la boucle d'exécution, il faut établir une connexion entre les deux processeurs car le processeur 0 a besoin des phéromones et des informations `directions`, `historic_path` et `age` de la colonie de fourmis pour pouvoir faire l'affichage. 
+
+On obtient donc : 
+Temps total=103.05959343910217
+2327
+Temps de calul = 96.65991544723511
+Temps de communication = 6.315622091293335
+Temps d'affichage = 63.289780616760254
+
+
+Cela nous permet donc de calculer le speed-up :
+
+
+
+
 
 
 
