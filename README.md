@@ -47,6 +47,13 @@ Temps d'affichage = 63.289780616760254
 
 Cela nous permet donc de calculer le speed-up :
 
+$S(2)=\frac{t_{total-séquentiel}}{t_{total-parallèle}}=$
+
+### Séparation affichage-calcul et répartition des fourmis entre les processeurs
+
+Maintenant que l'on a séparer l'affichage et les calculs, c'est le temps de calcul qui limite l'exécution du programme. On peut donc essayer de répartir les fourmis entre les processus de rang autre que 0. Pour cela, on va créer une colonie par processus `local_ants` et chaque processus s'occupera de faire les calculs sur sa colonie. 
+
+Cependant la gestion des phéromones peut ici nous poser problème. En effet, dans les calculs, les processeurs exécutent la fonction `advance` de `Colony` qui récupère la matrice des phéromones et la modifie. Mais cette modification utilise les marquages des cases voisines. Donc si on ne conserve pas l'ancienne matrice de phéromones, on risque de faire des marquages qui n'auront pas de sens.
 
 
 
