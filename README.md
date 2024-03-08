@@ -76,7 +76,8 @@ Ainsi que la méthode `mark` de `Pheromon` :
                    old_pheromon[the_position[0]+2, the_position[1]+1] if has_WESN_exits[d.DIR_SOUTH] else 0.,
                    old_pheromon[the_position[0], the_position[1]+1] if has_WESN_exits[d.DIR_NORTH] else 0.], dtype=np.double)`
 
-
+De plus, le processeur 0 va avoir besoin de rassembler les informations de chaque colonie pour les afficher ainsi que réduire toutes les phéromones en prenant le max à chaque fois (alpha = 1).
+Cependant, j'ai essayé d'implenter tout ça avec `Gatherv` et `Reduce` mais si le programme ne m'affiche pas d'erreur particulière, aucune fourmi n'apparaît dans le labyrinthe. 
 
 
 ### Partitions du labyrinthe
