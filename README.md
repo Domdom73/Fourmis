@@ -19,12 +19,14 @@ Ensuite, j'ai rajouté des pas de temps dans `ants.py` pour pouvoir calculer le 
 Ici j'obtiens donc :
 
 food_counter=2327
-Temps total=120.08254170417786
-Temps de calul = 70.02479410171509
-Temps d'affichage = 48.793450117111206
 
-On observe donc que le temps d'affichage est assez conséquent : il représente 40,6% du temps d'exécution. Il paraît donc très pertinent de commencer par la séparation de 
-l'affichage et des calculs. 
+Temps total=231.17849493026733
+
+Temps de calul = 132.5206742286682
+
+Temps d'affichage = 96.941153049469
+
+On observe donc que le temps d'affichage est assez conséquent : il représente 41,9% du temps d'exécution. Il paraît donc très pertinent de commencer par la séparation de l'affichage et des calculs. 
 
 
 ## Stratégies de parallélisation 
@@ -41,14 +43,16 @@ De plus, dans la boucle d'exécution, il faut établir une connexion entre les d
 On obtient donc avec la ligne de commande : `mpirun -np 2 python3 main_mpi1.py`
 Temps total=103.05959343910217
 2327
-Temps de calul = 96.65991544723511
-Temps de communication = 6.315622091293335
-Temps d'affichage = 63.289780616760254
+Temps de calul = 143.2846806049347
+Temps de communication = 28.35943102836609
+Temps d'affichage = 99.53489828109741
 
 
 Cela nous permet donc de calculer le speed-up :
 
 $S(2)=\frac{t_{total-séquentiel}}{t_{total-parallèle}}=$
+
+C'est un speed-up tout à fait convenable qui nous permet de valider cette parallélisation. De plus le temps de communication est plutôt négligeable par rapport aux temps de calcul et d'affichage ce qui est aussi bon signe.
 
 ### Séparation affichage-calcul et répartition des fourmis entre les processeurs
 
