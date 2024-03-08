@@ -38,7 +38,7 @@ Pour séparer l'affichage du calcul, j'ai créé un nouveau fichier python `disp
 
 De plus, dans la boucle d'exécution, il faut établir une connexion entre les deux processeurs car le processeur 0 a besoin des phéromones et des informations `directions`, `historic_path` et `age` de la colonie de fourmis pour pouvoir faire l'affichage. 
 
-On obtient donc : 
+On obtient donc avec la ligne de commande : `mpirun -np 2 python3 main_mpi1.py`
 Temps total=103.05959343910217
 2327
 Temps de calul = 96.65991544723511
