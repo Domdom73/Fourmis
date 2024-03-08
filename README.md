@@ -82,7 +82,7 @@ Cependant, j'ai essayé d'implenter tout ça avec `Gatherv` et `Reduce` mais si 
 
 ### Partitions du labyrinthe
 On peut enfin se poser la question d'une potentielle partition du labyrinthe. On pourrait s'inspirer du jeu de la vie en commençant par diviser le labyrinthe en deux puis en quatre. Cependant les questions que l'on se pose seront quand même bien différentes. En effet, si dans le jeu de la vie on utilisait des *cellules fantômes* pour communiquer les informations entre les processus, ici nous aurons le problème des fourmis qui passent d'une partie à une autre. 
-De plus, il faudra aussi se poser la question de l'équilibre des charges. En effet, si on fait des captures du labyrinthe à des moments assez aléatoires comme ci-dessus, on peut voir que certaines parties du labyrinthe ne sont pas atteintes par les fourmis. De plus, les fourmis peuvent parfois se concentrer dans certaines parties du labyrinthe ce qui surchargerait un processeur par rapport aux autres. 
+De plus, il faudra aussi se poser la question de l'équilibre des charges. En effet, si on observe aléatoirement le comportement des fourmis, on peut voir que certaines parties du labyrinthe ne sont pas atteintes par les fourmis. De plus, les fourmis peuvent parfois se concentrer dans certaines parties du labyrinthe ce qui surchargerait un processeur par rapport aux autres. 
 
 
 
